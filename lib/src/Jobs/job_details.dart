@@ -110,7 +110,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
     addNewApplicant();
   }
 
-// methdd to increment applicant value when apply button is clicked
+// method to increment applicant value when apply button is clicked
   void addNewApplicant() async {
     var docRef =
         FirebaseFirestore.instance.collection('jobs').doc(widget.jobId);

@@ -17,10 +17,11 @@ class ProfileScreen extends StatefulWidget {
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
+
+  // getUserData() {}
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String? name;
   String email = '';
   String phoneNumber = '';
@@ -31,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 // function to get user data, called in initState
   void getUserData() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     try {
       _isLoading = true;
       final DocumentSnapshot userDoc = await FirebaseFirestore.instance
@@ -70,6 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
+// widget for the email and call info
   Widget userInfo({required IconData icon, required String content}) {
     return Row(
       children: [
@@ -88,6 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+// widget to render the contact items: WhatsApp, Email and Call
   Widget _contactIcon(
       {required Color color, required Function fct, required IconData icon}) {
     return CircleAvatar(
@@ -159,6 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(top: 0),
                   child: Stack(
                     children: [
+                      // NAME, ACCOUNT INFORMATION, CONTACT ICONS
                       Card(
                         color: tdismissable,
                         margin: const EdgeInsets.all(15),
@@ -173,6 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 height: 100,
                               ),
+                              // NAME
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
@@ -184,6 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               dividerWidget(),
+                              // ACCOUNT INFORMATION
                               const Padding(
                                 padding: EdgeInsets.all(10.0),
                                 child: Text(
@@ -198,6 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 height: 15,
                               ),
+                              // EMAIL TEXT
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: userInfo(
@@ -208,6 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 height: 15,
                               ),
+                              // PHONE NUMBER TEXT
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: userInfo(
@@ -222,6 +231,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 height: 25,
                               ),
+                              // CONTACT ICONS
+                              // SAME USER
                               _isSameUser
                                   ? Container()
                                   : Row(
@@ -254,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 height: 15,
                               ),
-                             
+                              // DIFFERENT USER
                               !_isSameUser
                                   ? Container()
                                   : Center(
@@ -263,7 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             const EdgeInsets.only(bottom: 30),
                                         child: MaterialButton(
                                           onPressed: () {
-                                            _auth.signOut();
+                                            FirebaseAuth.instance.signOut();
                                             Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -316,6 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
+                      // IMAGE AVATAR
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

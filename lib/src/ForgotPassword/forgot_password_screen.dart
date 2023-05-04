@@ -23,7 +23,7 @@ class _ForgotPasswordState extends State<ForgotPassword>
   late AnimationController _animationController;
   final TextEditingController _forgotPasswordTextController =
       TextEditingController(text: '');
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   // Animation
   @override
   void initState() {
@@ -52,8 +52,9 @@ class _ForgotPasswordState extends State<ForgotPassword>
   }
 
   void _forgotPasswordSubmitForm() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      await _auth.sendPasswordResetEmail(
+      await auth.sendPasswordResetEmail(
           email: _forgotPasswordTextController.text);
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
@@ -76,18 +77,25 @@ class _ForgotPasswordState extends State<ForgotPassword>
     return Scaffold(
       body: Stack(
         children: [
-          CachedNetworkImage(
-            placeholder: (context, url) => Image.asset(
-              'assets/images/wallpaper.jpg',
-              fit: BoxFit.fill,
-            ),
-            imageUrl: forgotUrlImage,
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+          Image.asset(
+            'assets/images/forgotPasswordImg.jpg',
+            fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
-            fit: BoxFit.cover,
             alignment: FractionalOffset(_animation.value, 0),
           ),
+          // CachedNetworkImage(
+          //   placeholder: (context, url) => Image.asset(
+          //     'assets/images/wallpaper.jpg',
+          //     fit: BoxFit.fill,
+          //   ),
+          //   imageUrl: forgotUrlImage,
+          //   errorWidget: (context, url, error) => const Icon(Icons.error),
+          //   width: double.infinity,
+          //   height: double.infinity,
+          //   fit: BoxFit.cover,
+          //   alignment: FractionalOffset(_animation.value, 0),
+          // ),
           Container(
             color: Colors.black54,
             child: Padding(
@@ -120,7 +128,8 @@ class _ForgotPasswordState extends State<ForgotPassword>
                   const SizedBox(
                     height: 20,
                   ),
-                  TextField(
+                  TextFormField(
+                    key: const Key('EmailAddress'),
                     controller: _forgotPasswordTextController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
@@ -143,6 +152,7 @@ class _ForgotPasswordState extends State<ForgotPassword>
                       _forgotPasswordSubmitForm();
                     },
                     color: tPrimaryColor,
+                    // key: ValueKey('ResetButton'),
                     elevation: 8,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(13)),

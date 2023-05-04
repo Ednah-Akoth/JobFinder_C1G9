@@ -14,10 +14,10 @@ class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Login> createState() => LoginState();
 }
 
-class _LoginState extends State<Login> with TickerProviderStateMixin {
+class LoginState extends State<Login> with TickerProviderStateMixin {
   // initialize animation
   late Animation<double> _animation;
   // animation controller
@@ -28,11 +28,10 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       TextEditingController(text: '');
   final TextEditingController _passwordTextController =
       TextEditingController(text: '');
-  bool _obscureText = true;
+  bool _obscureText = false;
   bool _isLoading = false;
 
 // firebase auth
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
 // for the forms
   final _loginFormKey = GlobalKey<FormState>();
@@ -72,7 +71,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
 // Login Method
 
-  void _submitFormOnLogin() async {
+  void submitFormOnLogin() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     final isValid = _loginFormKey.currentState!.validate();
     if (isValid) {
       setState(() {
@@ -105,18 +105,25 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
-          CachedNetworkImage(
-            imageUrl: loginUrlImage,
-            placeholder: (context, url) => Image.asset(
-              'assets/images/wallpaper.jpg',
-              fit: BoxFit.fill,
-            ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+          Image.asset(
+            'assets/images/loginImg.jpg',
+            fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
-            fit: BoxFit.cover,
             alignment: FractionalOffset(_animation.value, 0),
           ),
+          // CachedNetworkImage(
+          //   imageUrl: loginUrlImage,
+          //   placeholder: (context, url) => Image.asset(
+          //     'assets/images/wallpaper.jpg',
+          //     fit: BoxFit.fill,
+          //   ),
+          //   errorWidget: (context, url, error) => const Icon(Icons.error),
+          //   width: double.infinity,
+          //   height: double.infinity,
+          //   fit: BoxFit.cover,
+          //   alignment: FractionalOffset(_animation.value, 0),
+          // ),
           Container(
             color: Colors.black54,
             child: Padding(
@@ -135,6 +142,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     child: Column(
                       children: [
                         TextFormField(
+                          key: ValueKey('EmailAddress'),
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => FocusScope.of(context)
                               .requestFocus(_passFocusNode),
@@ -165,6 +173,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           height: 20,
                         ),
                         TextFormField(
+                          key: ValueKey('Password'),
                           textInputAction: TextInputAction.next,
                           focusNode: _passFocusNode,
                           keyboardType: TextInputType.visiblePassword,
@@ -188,8 +197,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                 },
                                 child: Icon(
                                   _obscureText
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Colors.white,
                                 ),
                               ),
@@ -219,6 +228,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             },
                             child: const Text(
                               'Forgot Password?',
+                              key: ValueKey('ForgotPassword'),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 17,
@@ -235,6 +245,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   width: 70,
                                   height: 70,
                                   child: const CircularProgressIndicator(
+                                    key: ValueKey('ProgressIndicator'),
                                     backgroundColor: tdismissable,
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                         tPrimaryColor),
@@ -242,7 +253,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                 ),
                               )
                             : MaterialButton(
-                                onPressed: _submitFormOnLogin,
+                                onPressed: submitFormOnLogin,
                                 color: tPrimaryColor,
                                 elevation: 8,
                                 shape: RoundedRectangleBorder(

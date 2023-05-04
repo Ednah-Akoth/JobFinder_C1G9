@@ -6,9 +6,11 @@ import 'LoginPage/login_screen.dart';
 
 class UserState extends StatelessWidget {
   const UserState({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+    // final FirebaseAuth auth = FirebaseAuth.instance;
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {

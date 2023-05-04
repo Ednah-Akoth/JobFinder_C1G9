@@ -107,6 +107,7 @@ class _JobScreenState extends State<JobScreen> {
     // once user comes to this page, get their name, and image
     Persistent persistentObject = Persistent();
     persistentObject.getAdditionalData();
+    // getAdditionalData();
     super.initState();
   }
 
@@ -119,28 +120,8 @@ class _JobScreenState extends State<JobScreen> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: CircleAvatar(
-                  backgroundColor: tPrimaryColor,
-                  radius: 20,
-                  // ignore: prefer_if_null_operators
-                  child: Image.network(
-                    userImage == null
-                        ? 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'
-                        : userImage!,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
             const Text(
               'Welcome Back 👋🏽',
               style: TextStyle(color: tPrimaryColor),

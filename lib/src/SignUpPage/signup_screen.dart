@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:application_job/src/Services/global_methods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,10 +39,10 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   final TextEditingController _locationTextController =
       TextEditingController(text: "");
 
-  bool _obscureText = true;
+  bool _obscureText = false;
   bool _isLoading = false;
   File? imageFile; //for the image upload
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   String? imageUrl;
 
   //an object used by the stateful widget to obtain the keyboard focus
@@ -182,6 +181,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
 
 // function to submit form to firebase
   void _submitFormOnSignUp() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     final isValid = _signUpFormKey.currentState!.validate();
 
     if (isValid) {
@@ -220,7 +220,9 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           'location': _locationTextController.text,
           'createdAt': Timestamp.now(),
         });
-        Navigator.canPop(context) ? Navigator.pop(context) : null;//after user signs up, they should be redirected to login page
+        Navigator.canPop(context)
+            ? Navigator.pop(context)
+            : null; //after user signs up, they should be redirected to login page
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(" Account created successfully."),
           backgroundColor: Colors.greenAccent,
@@ -243,18 +245,25 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size; //size of the screen
     return Scaffold(
       body: Stack(children: [
-        CachedNetworkImage(
-          imageUrl: signUpUrlImage,
-          placeholder: (context, url) => Image.asset(
-            'assets/images/wallpaper.jpg',
-            fit: BoxFit.fill,
-          ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+        Image.asset(
+          'assets/images/signUpImg.jpg',
+          fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
-          fit: BoxFit.cover,
           alignment: FractionalOffset(_animation.value, 0),
         ),
+        // CachedNetworkImage(
+        //   imageUrl: signUpUrlImage,
+        //   placeholder: (context, url) => Image.asset(
+        //     'assets/images/wallpaper.jpg',
+        //     fit: BoxFit.fill,
+        //   ),
+        //   errorWidget: (context, url, error) => const Icon(Icons.error),
+        //   width: double.infinity,
+        //   height: double.infinity,
+        //   fit: BoxFit.cover,
+        //   alignment: FractionalOffset(_animation.value, 0),
+        // ),
         Container(
           color: Colors.black54,
           child: Padding(
@@ -301,6 +310,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         height: 20,
                       ),
                       TextFormField(
+                        key: ValueKey('FullName'),
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_emailFocusNode),
@@ -333,6 +343,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         height: 20,
                       ),
                       TextFormField(
+                        key: ValueKey('EmailAddress'),
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_passwordFocusNode),
@@ -365,6 +376,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         height: 20,
                       ),
                       TextFormField(
+                        key: ValueKey('Password'),
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_phoneNumberFocusNode),
@@ -388,8 +400,8 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                               },
                               child: Icon(
                                 _obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Colors.white,
                               ),
                             ),
@@ -411,6 +423,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         height: 20,
                       ),
                       TextFormField(
+                        key: ValueKey('PhoneNumber'),
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_positionCPFocusNode),
@@ -443,6 +456,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         height: 20,
                       ),
                       TextFormField(
+                        key: ValueKey('Address'),
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(
@@ -489,9 +503,47 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                               ),
                             )
                           : MaterialButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 //submit form on signup
                                 _submitFormOnSignUp();
+
+                                // final isValid =
+                                //     _signUpFormKey.currentState!.validate();
+
+                                // if (isValid) {
+                                //   if (imageFile == null) {
+                                //     // if no image, show error dialog that we created
+                                //     GlobalMethod.showErrorDialog(
+                                //         error: 'Please pick an image',
+                                //         context: context);
+                                //     return;
+                                //   }
+                                //   // else if imagefile is not null
+                                //   setState(() {
+                                //     _isLoading = true;
+                                //   });
+                                //   bool? result = await AuthService()
+                                //       .submitSignUpForm(
+                                //           _fullNameController.text.trim(),
+                                //           _emailTextController.text.trim(),
+                                //           _passwordTextController.text.trim(),
+                                //           _phoneNumberTextController.text
+                                //               .trim(),
+                                //           _locationTextController.text.trim(),
+                                //           imageFile);
+                                //   Navigator.canPop(context)
+                                //       ? Navigator.pop(context)
+                                //       : null; //after user signs up, they should be redirected to login page
+                                //   ScaffoldMessenger.of(context)
+                                //       .showSnackBar(const SnackBar(
+                                //     content:
+                                //         Text(" Account created successfully."),
+                                //     backgroundColor: Colors.greenAccent,
+                                //   ));
+                                // }
+                                // setState(() {
+                                //   _isLoading = false;
+                                // });
                               },
                               color: tPrimaryColor,
                               elevation: 8,
@@ -506,6 +558,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                                   children: const [
                                     Text(
                                       "SignUp",
+                                      key: ValueKey('SignUp'),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -518,7 +571,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
 
                       //  ALREADY HAVE AN ACCOUNT
                       const SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
                       Center(
                         child: RichText(
