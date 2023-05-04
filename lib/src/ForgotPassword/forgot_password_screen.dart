@@ -78,7 +78,7 @@ class _ForgotPasswordState extends State<ForgotPassword>
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/forgotPasswordImg.jpg',
+            'assets/images/loginImg.jpg',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,

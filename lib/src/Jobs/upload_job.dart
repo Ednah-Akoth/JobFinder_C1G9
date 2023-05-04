@@ -264,26 +264,26 @@ class _UploadJobState extends State<UploadJob> {
 
 // // method to fetch name, location and image of user from the users collection and upload it with the job here
 //   //method will be called when widget is mounted, thus called within initState
-//   void getAdditionalData() async {
-//     // get the user with uid equal to the one who is logged in, since this is the person posting
-//     final DocumentSnapshot userDoc = await FirebaseFirestore.instance
-//         .collection('users')
-//         .doc(FirebaseAuth.instance.currentUser!.uid)
-//         .get();
+  void getAdditionalData() async {
+    // get the user with uid equal to the one who is logged in, since this is the person posting
+    final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
 
-//     setState(() {
-//       name = userDoc.get('name');
-//       userImage = userDoc.get('userImage');
-//       location = userDoc.get('location');
-//     });
-//   }
+    setState(() {
+      name = userDoc.get('name');
+      userImage = userDoc.get('userImage');
+      location = userDoc.get('location');
+    });
+  }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   getAdditionalData();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getAdditionalData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

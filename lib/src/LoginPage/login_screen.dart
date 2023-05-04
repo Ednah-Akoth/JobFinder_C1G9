@@ -106,7 +106,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/loginImg.jpg',
+            'assets/images/forgotPasswordImg.jpg',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,

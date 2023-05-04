@@ -201,8 +201,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             email: _emailTextController.text.trim().toLowerCase(),
             password: _passwordTextController.text.trim());
 
-        final User? user =
-            _auth.currentUser; //assign current user to the user variable
+        final User? user = _auth.currentUser; //assign current user to the user variable
         final _uid = user!.uid; //get their uid
         final ref = FirebaseStorage.instance
             .ref()
